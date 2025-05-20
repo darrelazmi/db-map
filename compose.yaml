@@ -1,0 +1,28 @@
+services:
+  postgrest-map:
+    image: postgrest/postgrest
+    container_name: postgrest-map
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      PGRST_DB_URI: postgres://authenticator:postgres@postgres-map:5432/datahara
+      PGRST_DB_SCHEMAS: geodata
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_SERVER_CORS: "*"
+    depends_on:
+      - postgres-map
+  postgres-map:
+    image: postgres
+    container_name: postgres-map
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - map-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+ 
+volumes:
+  map-db:
