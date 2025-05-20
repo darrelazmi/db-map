@@ -9,7 +9,6 @@ services:
       PGRST_DB_URI: postgres://authenticator:postgres@postgres-map:5432/datahara
       PGRST_DB_SCHEMAS: geodata
       PGRST_DB_ANON_ROLE: anon
-      PGRST_SERVER_CORS: "*"
     depends_on:
       - postgres-map
   postgres-map:

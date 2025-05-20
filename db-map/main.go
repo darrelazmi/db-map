@@ -22,7 +22,7 @@ func main() {
 	}
 	defer db.Close()
 
-	dir := "."
+	dir := "./maps"
 
 	err = filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
