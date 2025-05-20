@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Peta GeoJSON</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([-2.5, 118], 5); // Fokus ke Indonesia
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Ganti angka di id=eq.1 sesuai baris yang ingin kamu tampilkan
+    fetch('http://localhost:3000/kondisi?id=eq.1&select=map')
+      .then(res => res.json())
+      .then(rows => {
+        if (rows.length > 0) {
+          const geojson = rows[0].map;
+
+          L.geoJSON(geojson, {
+            onEachFeature: function (feature, layer) {
+              if (feature.properties && feature.properties.name) {
+                layer.bindPopup(feature.properties.name);
+              }
+            }
+          }).addTo(map);
+        } else {
+          console.error("Data tidak ditemukan.");
+        }
+      })
+      .catch(err => console.error("Gagal memuat data:", err));
+  </script>
+</body>
+</html>
