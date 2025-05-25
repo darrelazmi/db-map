@@ -15,13 +15,16 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const map = L.map('map').setView([-2.5, 118], 5); // Fokus ke Indonesia
+    // const map = L.map('map').setView([-6.6, 106.8], 11); // Focus on Bogor
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
     // Ganti angka di id=eq.1 sesuai baris yang ingin kamu tampilkan
-    fetch('http://localhost:3000/kondisi?id=eq.1&select=map')
+    // fetch('http://localhost:3000/kondisi?id=eq.1&select=map')
+    fetch('http://localhost:3000/kondisi?name=eq.indonesia.geojson&select=map')
+
       .then(res => res.json())
       .then(rows => {
         if (rows.length > 0) {
