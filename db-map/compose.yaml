@@ -1,3 +1,5 @@
+version:  '3.9'
+
 services:
   postgrest-map:
     image: postgrest/postgrest
@@ -22,6 +24,17 @@ services:
       - map-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
- 
+  geojson-importer:
+    build: .
+    container_name: geojson-importer
+    depends_on:
+      - postgres-map
+    environment:
+      PGHOST: postgres-map
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: datahara
+    restart: "no"
 volumes:
   map-db:
