@@ -11,6 +11,9 @@ services:
       PGRST_DB_ANON_ROLE: anon
     depends_on:
       - postgres-map
+    networks:
+      - caddy
+      - db
   postgres-map:
     image: postgres
     container_name: postgres-map
@@ -22,6 +25,8 @@ services:
       - map-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - db
   geojson-importer:
     build: .
     container_name: geojson-importer
@@ -34,5 +39,25 @@ services:
       PGPASSWORD: postgres
       PGDATABASE: datahara
     restart: "no"
+    networks:
+      - db
+  caddy:
+    image: caddy
+    restart: unless-stopped
+    container_name: caddy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/site:/srv
+      - ./caddy/caddy_data:/data
+      - ./caddy/caddy_config:/config
+    networks:
+      - caddy
 volumes:
   map-db:
+  caddy_data:
+    external: true
+  caddy_config:
+
