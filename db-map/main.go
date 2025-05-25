@@ -15,7 +15,8 @@ import (
 )
 
 func main() {
-	connStr := "host=localhost port=5432 user=postgres dbname=datahara password=postgres sslmode=disable"
+	// connStr := "host=localhost port=5432 user=postgres dbname=datahara password=postgres sslmode=disable"
+	connStr := "host=postgres-map port=5432 user=postgres dbname=datahara password=postgres sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
